@@ -15,7 +15,7 @@ function App() {
       <input 
       value={search}
       onChange={searchHandleNoteChange}/>
-      <Countries search={search}/>
+      <Countries search={search} setSearch={setSearch}/>
     </div>
   );
 }
