@@ -1,7 +1,6 @@
 import React from "react";
 import Person from './Person'
 import personsMethods from '../services/persons'
-import db from '../db'
 
 const AllPersons = ({persons, filter, setPersons, setSuccessMessage}) => {
 

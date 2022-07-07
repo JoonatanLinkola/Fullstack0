@@ -6,7 +6,6 @@ import personService from './services/persons'
 import AllPersons from './components/AllPersons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import db from './db'
 import Notification from './components/Notification'
 import './index.css'
 
@@ -25,12 +24,13 @@ const App = () => {
       .getAll()
       .then(response => {
         console.log('promise fulfilled')
+        console.log(response.data);
         setPersons(response.data)
       })
   }, [])
 
   console.log('render', persons.length, 'notes')
-
+  console.log(persons);
   const addNumber = (event) => {
     event.preventDefault()
     console.log('"add" button clicked', event.target)
@@ -38,14 +38,17 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    if (persons.map(each => each.name).includes(nameObject.name)) {
+    const person = persons.find(person=>person.name===nameObject.name)
+    console.log(person);
+    if (person){
       if (window.confirm(`${nameObject.name} is already added to phonebook, replace the old number with a new one?`)) {
-        const thisID = db.persons.filter(each => each.name === nameObject.name)
-                                 .map(one => one.id)
-
+        console.log(nameObject);
+        const thisID = person.id
+        console.log(thisID)
         personService.update(thisID, {...nameObject, number: newNumber})
-        .then((updated) => {
-          setPersons(persons.map(each => each.id !== thisID ? each : updated))
+        .then((response) => {
+          console.log(response.data);
+          setPersons(persons.map(each => each.id !== thisID ? each : response.data))
           setNewName('')
           setNewNumber('')
 
