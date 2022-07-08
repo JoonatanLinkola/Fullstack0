@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 // import Person from './components/Person'
 import AllPersons from './components/AllPersons'
@@ -39,7 +38,8 @@ const App = () => {
       number: newNumber
     }
     const person = persons.find(person=>person.name===nameObject.name)
-    console.log(person);
+    console.log(person)
+
     if (person){
       if (window.confirm(`${nameObject.name} is already added to phonebook, replace the old number with a new one?`)) {
         console.log(nameObject);
@@ -75,12 +75,21 @@ const App = () => {
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
+
+          setSuccessMessage(`Added ${nameObject.name}`)
+          setTimeout(() => {
+          setSuccessMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          console.log(error.response.data) // is an object
+          setErrorMessage(error.response.data.error) // takes the 'error' parameter from above object
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         })
 
-        setSuccessMessage(`Added ${nameObject.name}`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000);
+        
     }
   }
 
