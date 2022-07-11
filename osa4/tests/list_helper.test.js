@@ -89,7 +89,7 @@ describe('total likes', () => {
 describe('favourite blog', () => {
   test('of empty list returns empty', () => {
     const result = listHelper.favoriteBlog(listWithZeroBlogs)
-    expect(result).toEqual([])
+    expect(result).toEqual({})
   })
 
   test('when list has only one blog returns itself', () => {
@@ -107,6 +107,29 @@ describe('favourite blog', () => {
       title: 'Canonical string reduction',
       author: 'Edsger W. Dijkstra',
       likes: 12
+    })
+  })
+})
+
+describe('most blogs', () => {
+  test('of empty list returns empty', () => {
+    const result = listHelper.mostBlogs(listWithZeroBlogs)
+    expect(result).toEqual({})
+  })
+
+  test('when list has only one blog returns its author', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      blogs: 1
+    })
+  })
+
+  test('returns correct author from a big list', () => {
+    const result = listHelper.mostBlogs(listWithLotsOfBlogs)
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3
     })
   })
 })

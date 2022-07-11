@@ -13,17 +13,9 @@ const totalLikes = (blogs) => {
 }
 
 const favoriteBlog = (blogs) => {
-  if (blogs.length === 0) return []
-  // const findFavorite = (sameBlogs) => {
-  //   const maxLikes = Math.max(sameBlogs.map(each => each.likes))
-  //   const favorite = sameBlogs.find(each => each.likes === maxLikes)
-  //   return favorite
-  // }  old implementation
-  const findFavorite = (sameBlogs) => {
-    const favorite = [...sameBlogs].sort((a, b) => b.likes - a.likes)[0]
-    return favorite
-  }
-  const fav = findFavorite(blogs)
+  if (blogs.length === 0) return {}
+
+  const fav = [...blogs].sort((a, b) => b.likes - a.likes)[0] // blogs sorted in descending order by likes
 
   return {
     title: fav.title,
@@ -32,8 +24,23 @@ const favoriteBlog = (blogs) => {
   }
 }
 
+const mostBlogs = (blogs) => {
+  if (blogs.length === 0) return {}
+
+  const authors = blogs.map(each => each.author)
+  const map = authors.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) +1), new Map) // Map(author => blog count)
+  const most = [...map.entries()].sort((a, b) => b[1] - a[1])[0] // pairs [author, blog count] sorted in descending order
+
+  return {
+    author: most[0],
+    blogs: most[1]
+  }
+
+}
+
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 }
