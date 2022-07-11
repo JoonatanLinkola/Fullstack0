@@ -9,12 +9,31 @@ const totalLikes = (blogs) => {
   }
   const likes = blogs.map(each => each.likes)
 
-  return totalLikes.length === 0
-    ? 0
-    : likes.reduce(reducer, 0)
+  return likes.reduce(reducer, 0)
+}
+
+const favoriteBlog = (blogs) => {
+  if (blogs.length === 0) return []
+  // const findFavorite = (sameBlogs) => {
+  //   const maxLikes = Math.max(sameBlogs.map(each => each.likes))
+  //   const favorite = sameBlogs.find(each => each.likes === maxLikes)
+  //   return favorite
+  // }  old implementation
+  const findFavorite = (sameBlogs) => {
+    const favorite = [...sameBlogs].sort((a, b) => b.likes - a.likes)[0]
+    return favorite
+  }
+  const fav = findFavorite(blogs)
+
+  return {
+    title: fav.title,
+    author: fav.author,
+    likes: fav.likes
+  }
 }
 
 module.exports = {
   dummy,
-  totalLikes
+  totalLikes,
+  favoriteBlog
 }
