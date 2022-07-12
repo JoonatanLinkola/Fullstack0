@@ -66,8 +66,7 @@ test('a blog without "likes" assigned to it gets 0 likes', async () => {
   expect(blogsAtEnd).toHaveLength(helper.listWithLotsOfBlogs.length + 1)
   console.log(blogsAtEnd)
 
-  const zeros = blogsAtEnd.map(n => n.likes).filter(n => n === 0)
-  expect(zeros).toHaveLength(2) // "listWithLotsOfBlogs" has initially one blog with zero likes
+  expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
 })
 
 test('blog without title or url is not added', async () => {
@@ -102,6 +101,25 @@ test('deleting a blog', async () => {
   const titles = blogsAtEnd.map(n => n.title)
 
   expect(titles).not.toContain(blogToDelete.content)
+})
+
+test('modifying a blog', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+
+  const updatedBlog = {
+    ...blogsAtStart[0],
+    likes: 7000,
+  }
+
+  await api
+    .put(`/api/blogs/${updatedBlog.id}`)
+    .send(updatedBlog)
+    .expect(200)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  const likes = blogsAtEnd.map(n => n.likes)
+
+  expect(likes[0]).toBe(updatedBlog.likes)
 })
 
 afterAll(() => {
