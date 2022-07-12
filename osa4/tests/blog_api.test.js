@@ -22,6 +22,12 @@ test('the right amount of blogs are returned', async () => {
   expect(response.body).toHaveLength(helper.listWithLotsOfBlogs.length)
 })
 
+test('blog id returned as "id" rather than "_id"', async () => {
+  const response = await api.get('/api/blogs')
+  console.log('JOOOO', response.body)
+  expect(response.body[0].id).toBeDefined()
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
