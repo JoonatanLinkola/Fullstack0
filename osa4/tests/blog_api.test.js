@@ -70,6 +70,21 @@ test('a blog without "likes" assigned to it gets 0 likes', async () => {
   expect(zeros).toHaveLength(2) // "listWithLotsOfBlogs" has initially one blog with zero likes
 })
 
+test('blog without title or url is not added', async () => {
+  const newBlog = {
+    author: 'TEST no title or url',
+    likes: 7357
+  }
+  console.log('newBlog: ', newBlog)
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.listWithLotsOfBlogs.length)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
