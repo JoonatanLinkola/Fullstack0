@@ -5,7 +5,6 @@ const cors = require('cors')
 const blogsRouter = require('./controllers/blogs')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
-app.use('/api/blogs', blogsRouter)
 
 logger.info('connecting to', config.MONGODB_URI)
 
